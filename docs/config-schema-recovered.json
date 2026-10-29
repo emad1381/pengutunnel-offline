@@ -1,0 +1,683 @@
+[
+  {
+    "address": "0x2b1f298",
+    "size": 48,
+    "fields": [
+      {
+        "name": "AdC9GlUp",
+        "tag": "toml:\"name\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 0
+      },
+      {
+        "name": "BlGIx0hl76NS",
+        "tag": "toml:\"address\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 16
+      },
+      {
+        "name": "BVDcHS",
+        "tag": "toml:\"mtu\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 32
+      },
+      {
+        "name": "INranJ",
+        "tag": "toml:\"health_port\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 40
+      }
+    ]
+  },
+  {
+    "address": "0x2b1f348",
+    "size": 96,
+    "fields": [
+      {
+        "name": "AyzCpQ9iY",
+        "tag": "toml:\"listen\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 0
+      },
+      {
+        "name": "HmstpmoTx9",
+        "tag": "toml:\"db\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 16
+      },
+      {
+        "name": "RUY_zRDfe0q0",
+        "tag": "toml:\"signing_key\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 32
+      },
+      {
+        "name": "JuOdvugq",
+        "tag": "toml:\"trust_proxy\"",
+        "kind": "bool",
+        "type_address": "0x2b5f360",
+        "offset": 48
+      },
+      {
+        "name": "VmMAc_as1O7w",
+        "tag": "toml:\"hmac_compat\"",
+        "kind": "pointer",
+        "type_address": "0x2aa8d10",
+        "offset": 56
+      },
+      {
+        "name": "F4oq0CZcEsV6",
+        "tag": "toml:\"min_core_version\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 64
+      },
+      {
+        "name": "A7fhyT2",
+        "tag": "toml:\"token_secret\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 80
+      }
+    ]
+  },
+  {
+    "address": "0x2b1f578",
+    "size": 128,
+    "fields": [
+      {
+        "name": "DC0kCLt_J8",
+        "tag": "toml:\"mode\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 0
+      },
+      {
+        "name": "UhsnwmUmaq",
+        "tag": "toml:\"profile\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 16
+      },
+      {
+        "name": "FEjR_YKyb",
+        "tag": "toml:\"listen_ip\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 32
+      },
+      {
+        "name": "NONSrtPwOIhK",
+        "tag": "toml:\"dst_ip\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 48
+      },
+      {
+        "name": "SLvwlodsN",
+        "tag": "toml:\"interface\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 64
+      },
+      {
+        "name": "Zq4oqVy7Xd0V",
+        "tag": "toml:\"icmp_type\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 80
+      },
+      {
+        "name": "Xaom6GJMRe",
+        "tag": "toml:\"icmp_code\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 88
+      },
+      {
+        "name": "PtmxD2J",
+        "tag": "toml:\"spoof_source\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 96
+      },
+      {
+        "name": "Z0aNWls",
+        "tag": "toml:\"spoof_peer\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 112
+      }
+    ]
+  },
+  {
+    "address": "0x2b1f858",
+    "size": 24,
+    "fields": [
+      {
+        "name": "Hph9F9jw5Ir",
+        "tag": "toml:\"key\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 0
+      },
+      {
+        "name": "SSt2bh7okR",
+        "tag": "toml:\"self\"",
+        "kind": "bool",
+        "type_address": "0x2b5f360",
+        "offset": 16
+      }
+    ]
+  },
+  {
+    "address": "0x2b1f8d8",
+    "size": 32,
+    "fields": [
+      {
+        "name": "IRj2aO2V",
+        "tag": "toml:\"proxy_protocol\"",
+        "kind": "pointer",
+        "type_address": "0x2aa8d10",
+        "offset": 0
+      },
+      {
+        "name": "Jd5dGcE",
+        "tag": "toml:\"ports\"",
+        "kind": "slice",
+        "type_address": "0x2b0ce50",
+        "offset": 8
+      }
+    ]
+  },
+  {
+    "address": "0x2b1f958",
+    "size": 96,
+    "fields": [
+      {
+        "name": "KqyHhsqt9",
+        "tag": "toml:\"enabled\"",
+        "kind": "bool",
+        "type_address": "0x2b5f360",
+        "offset": 0
+      },
+      {
+        "name": "Ivm1unO5fjeS",
+        "tag": "toml:\"mode\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 8
+      },
+      {
+        "name": "Y6ZY0l",
+        "tag": "toml:\"jail\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 24
+      },
+      {
+        "name": "EVErxy",
+        "tag": "toml:\"poll_interval\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 40
+      },
+      {
+        "name": "UcOISJtJWjQ",
+        "tag": "toml:\"control_port\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 48
+      },
+      {
+        "name": "IhIQwQyhL8Ck",
+        "tag": "toml:\"server_addr\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 56
+      },
+      {
+        "name": "H0wwhPer",
+        "tag": "toml:\"peer_ip\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 72
+      },
+      {
+        "name": "Agfg5ew7i4",
+        "tag": "toml:\"max_ban_minutes\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 88
+      }
+    ]
+  },
+  {
+    "address": "0x2b1fce8",
+    "size": 40,
+    "fields": [
+      {
+        "name": "OrggDnqh",
+        "tag": "toml:\"enable_encryption\"",
+        "kind": "bool",
+        "type_address": "0x2b5f360",
+        "offset": 0
+      },
+      {
+        "name": "RHF8lh",
+        "tag": "toml:\"algorithm\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 8
+      },
+      {
+        "name": "G83Q4U8g",
+        "tag": "toml:\"psk\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 24
+      }
+    ]
+  },
+  {
+    "address": "0x2b1fde8",
+    "size": 16,
+    "fields": [
+      {
+        "name": "PTLY_g_05",
+        "tag": "toml:\"level\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 0
+      }
+    ]
+  },
+  {
+    "address": "0x2b1feb8",
+    "size": 72,
+    "fields": [
+      {
+        "name": "SbvlMg0LV",
+        "tag": "toml:\"auto_tuning\"",
+        "kind": "bool",
+        "type_address": "0x2b5f360",
+        "offset": 0
+      },
+      {
+        "name": "FR9TGR14s1n",
+        "tag": "toml:\"profile\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 8
+      },
+      {
+        "name": "CNBsgK7z8",
+        "tag": "toml:\"workers\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 24
+      },
+      {
+        "name": "I6aIztacbe",
+        "tag": "toml:\"channel_size\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 32
+      },
+      {
+        "name": "BWsde4bYM6",
+        "tag": "toml:\"so_sndbuf\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 40
+      },
+      {
+        "name": "YFF229qmj",
+        "tag": "toml:\"batch_size\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 48
+      },
+      {
+        "name": "RUkWp_N9Wk",
+        "tag": "toml:\"batch_bytes\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 56
+      },
+      {
+        "name": "GPlpwboTmxY",
+        "tag": "toml:\"stream_window\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 64
+      }
+    ]
+  },
+  {
+    "address": "0x2b20200",
+    "size": 16,
+    "fields": [
+      {
+        "name": "VPyYUlJyBf",
+        "tag": "toml:\"heartbeat_interval\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 0
+      },
+      {
+        "name": "VCr18PK",
+        "tag": "toml:\"heartbeat_timeout\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 8
+      }
+    ]
+  },
+  {
+    "address": "0x2b20300",
+    "size": 368,
+    "fields": [
+      {
+        "name": "WZPxva",
+        "tag": "toml:\"type\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 0
+      },
+      {
+        "name": "YVTb2TSjoX",
+        "tag": "toml:\"mode\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 16
+      },
+      {
+        "name": "Ou0Iyt05",
+        "tag": "toml:\"listen\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 32
+      },
+      {
+        "name": "V2GU1dI",
+        "tag": "toml:\"remote\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 48
+      },
+      {
+        "name": "Q5aIAo8al4W",
+        "tag": "toml:\"mux\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 64
+      },
+      {
+        "name": "AV_DMhr",
+        "tag": "toml:\"pool_connection\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 72
+      },
+      {
+        "name": "GOv1YMm",
+        "tag": "toml:\"icmp_type\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 80
+      },
+      {
+        "name": "X6O2OUOK5Cfa",
+        "tag": "toml:\"icmp_code\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 88
+      },
+      {
+        "name": "A1zVgIDn",
+        "tag": "toml:\"dns_domain\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 96
+      },
+      {
+        "name": "A_xcXPL",
+        "tag": "toml:\"source_ip\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 112
+      },
+      {
+        "name": "OUva_hhvF",
+        "tag": "toml:\"bind_interface\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 128
+      },
+      {
+        "name": "G686LANXc",
+        "tag": "toml:\"spoof_source\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 144
+      },
+      {
+        "name": "AGzQrmW",
+        "tag": "toml:\"spoof_peer\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 160
+      },
+      {
+        "name": "YmKjaT",
+        "tag": "toml:\"rekey_interval\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 176
+      },
+      {
+        "name": "UqDaFaWBr",
+        "tag": "toml:\"l4_header\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 184
+      },
+      {
+        "name": "JUEyF_tPYs",
+        "tag": "toml:\"l4_direction\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 200
+      },
+      {
+        "name": "HWDSgEt5Ej",
+        "tag": "toml:\"sni\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 216
+      },
+      {
+        "name": "BfFXU4",
+        "tag": "toml:\"tls_fingerprint\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 232
+      },
+      {
+        "name": "FGaYdGuHWJ",
+        "tag": "toml:\"ws_path\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 248
+      },
+      {
+        "name": "F4wVQZDQaGR",
+        "tag": "toml:\"ws_host\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 264
+      },
+      {
+        "name": "HfxBjnkqi_8",
+        "tag": "toml:\"xhttp_path\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 280
+      },
+      {
+        "name": "ETL8HUwPockw",
+        "tag": "toml:\"xhttp_host\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 296
+      },
+      {
+        "name": "EKUZhI_RsyD",
+        "tag": "toml:\"xhttp_cdn\"",
+        "kind": "bool",
+        "type_address": "0x2b5f360",
+        "offset": 312
+      },
+      {
+        "name": "WmjGPZ",
+        "tag": "toml:\"sni_spoof\"",
+        "kind": "bool",
+        "type_address": "0x2b5f360",
+        "offset": 313
+      },
+      {
+        "name": "KB0YvCwk7zTc",
+        "tag": "toml:\"sni_spoof_names\"",
+        "kind": "string",
+        "type_address": "0x2b5ef60",
+        "offset": 320
+      },
+      {
+        "name": "AXIM3Y6FqSg",
+        "tag": "toml:\"sni_spoof_ttl\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 336
+      },
+      {
+        "name": "U8jUIWX",
+        "tag": "toml:\"sni_spoof_strict\"",
+        "kind": "bool",
+        "type_address": "0x2b5f360",
+        "offset": 344
+      },
+      {
+        "name": "UYDZK6M6q",
+        "tag": "toml:\"l4_tls\"",
+        "kind": "bool",
+        "type_address": "0x2b5f360",
+        "offset": 345
+      },
+      {
+        "name": "F62ir1px_n_",
+        "tag": "toml:\"reorder_ms\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 352
+      },
+      {
+        "name": "QbCxZrVfty",
+        "tag": "toml:\"fec\"",
+        "kind": "int",
+        "type_address": "0x2b5f1a0",
+        "offset": 360
+      }
+    ]
+  },
+  {
+    "address": "0x2c6ed58",
+    "size": 936,
+    "fields": [
+      {
+        "name": "BdDv7ST2zm",
+        "tag": "toml:\"transport\"",
+        "kind": "struct",
+        "type_address": "0x2b20300",
+        "offset": 0
+      },
+      {
+        "name": "EPqoqjPrLXi",
+        "tag": "toml:\"tun\"",
+        "kind": "struct",
+        "type_address": "0x2b1f298",
+        "offset": 368
+      },
+      {
+        "name": "E0f8qH",
+        "tag": "toml:\"security\"",
+        "kind": "struct",
+        "type_address": "0x2b1fce8",
+        "offset": 416
+      },
+      {
+        "name": "NxeM0J",
+        "tag": "toml:\"license\"",
+        "kind": "struct",
+        "type_address": "0x2b1f858",
+        "offset": 456
+      },
+      {
+        "name": "Z4irQtjRdh",
+        "tag": "toml:\"health\"",
+        "kind": "struct",
+        "type_address": "0x2b20200",
+        "offset": 480
+      },
+      {
+        "name": "JAtSJ1Kv",
+        "tag": "toml:\"license_server\"",
+        "kind": "struct",
+        "type_address": "0x2b1f348",
+        "offset": 496
+      },
+      {
+        "name": "KEtzFNop",
+        "tag": "toml:\"tuning\"",
+        "kind": "struct",
+        "type_address": "0x2b1feb8",
+        "offset": 592
+      },
+      {
+        "name": "LhjkCBVWwMW",
+        "tag": "toml:\"logging\"",
+        "kind": "struct",
+        "type_address": "0x2b1fde8",
+        "offset": 664
+      },
+      {
+        "name": "Wva5OG",
+        "tag": "toml:\"forward\"",
+        "kind": "struct",
+        "type_address": "0x2b1f8d8",
+        "offset": 680
+      },
+      {
+        "name": "F0_nw1n8",
+        "tag": "toml:\"xui_iplimit\"",
+        "kind": "struct",
+        "type_address": "0x2b1f958",
+        "offset": 712
+      },
+      {
+        "name": "EyKK9j5fxD0f",
+        "tag": "toml:\"ipx\"",
+        "kind": "struct",
+        "type_address": "0x2b1f578",
+        "offset": 808
+      }
+    ]
+  }
+]

@@ -1,0 +1,8 @@
+*.log
+*.pcap
+*.core
+__pycache__/
+.env
+*.key
+*.pem
+configs/

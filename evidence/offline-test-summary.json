@@ -1,0 +1,93 @@
+[
+  {
+    "transport": "tcpfwd",
+    "cipher": "aes-256-gcm",
+    "direction": "reverse",
+    "bytes": [
+      64,
+      65536,
+      1048576
+    ],
+    "passed": true,
+    "no_license_server": true
+  },
+  {
+    "transport": "tls",
+    "cipher": "aes-256-gcm",
+    "direction": "reverse",
+    "bytes": [
+      64,
+      65536,
+      1048576
+    ],
+    "passed": true,
+    "no_license_server": true
+  },
+  {
+    "transport": "ws",
+    "cipher": "aes-256-gcm",
+    "direction": "reverse",
+    "bytes": [
+      64,
+      65536,
+      1048576
+    ],
+    "passed": true,
+    "no_license_server": true
+  },
+  {
+    "transport": "wss",
+    "cipher": "aes-256-gcm",
+    "direction": "reverse",
+    "bytes": [
+      64,
+      65536,
+      1048576
+    ],
+    "passed": true,
+    "no_license_server": true
+  },
+  {
+    "transport": "xhttp",
+    "cipher": "aes-256-gcm",
+    "direction": "reverse",
+    "bytes": [
+      64,
+      65536,
+      1048576
+    ],
+    "passed": true,
+    "no_license_server": true
+  },
+  {
+    "transport": "xhttps",
+    "cipher": "aes-256-gcm",
+    "direction": "reverse",
+    "bytes": [
+      64,
+      65536,
+      1048576
+    ],
+    "passed": true,
+    "no_license_server": true
+  },
+  {
+    "case": "tcpfwd-chacha",
+    "passed": true,
+    "no_license_server": true
+  },
+  {
+    "case": "tcpfwd-direct",
+    "passed": true,
+    "no_license_server": true
+  },
+  {
+    "case": "tls-direct",
+    "passed": true,
+    "no_license_server": true
+  },
+  {
+    "case": "wrong-psk-rejected",
+    "passed": true
+  }
+]

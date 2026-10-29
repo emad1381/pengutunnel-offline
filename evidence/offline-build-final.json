@@ -1,0 +1,35 @@
+{
+  "input_sha256": "3638b68f377a65d5a65f10b5d38744157067ecd175377094b6cd48c923b2bd18",
+  "output_sha256": "5d58cdde3483029a70c8b52b9434c4fe4bb4fbc093e47c5c38aba4be9361fb52",
+  "output_bytes": 43905148,
+  "edits": [
+    {
+      "address": "0x136d460",
+      "offset": 16176224,
+      "before": "4c8da42458fdffff4d",
+      "after": "31c031db31c931ffc3",
+      "purpose": "return empty token and no licensing error; do not make HTTP request"
+    },
+    {
+      "address": "0x1eb20c0",
+      "offset": 27992256,
+      "before": "4c8da42460fdffff4d",
+      "after": "31c031db31c931ffc3",
+      "purpose": "skip reverse-L4 public IP preflight used only to select the license IP"
+    },
+    {
+      "address": "0x1dc7440",
+      "offset": 27030592,
+      "before": "49",
+      "after": "c3",
+      "purpose": "do not initialize origin check background worker"
+    }
+  ],
+  "status": "passed six reverse L4 transports, TCP/TLS direct, ChaCha TCP and wrong-PSK rejection in isolated loopback; no mock license service",
+  "preserved": [
+    "original ELF layout",
+    "PSK authentication and transport encryption code",
+    "Ed25519 implementation and TLS verification code"
+  ],
+  "scope": "specific v5.1.3 binary; both peers must use the same tested copy"
+}
