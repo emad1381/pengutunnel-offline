@@ -4,7 +4,7 @@ set -euo pipefail
 # Fetches this reviewed pair only. It never starts an updater.
 REPOSITORY="emad1381/pengutunnel-offline"
 CORE_SHA="5d58cdde3483029a70c8b52b9434c4fe4bb4fbc093e47c5c38aba4be9361fb52"
-MANAGER_SHA="23ec3ab2c7ae46338e5d1522ed17c4407c2c93b3ed910b52bec4d39190ba586a"
+MANAGER_SHA="896853291178f9d6f68d9f45ba81825da4093762959f8ddcf3be88a659b9b950"
 VERIFY_ONLY=false
 REF="main"
 SOURCE_DIR=""

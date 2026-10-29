@@ -1,0 +1,10 @@
+{
+  "original_sha256": "3638b68f377a65d5a65f10b5d38744157067ecd175377094b6cd48c923b2bd18",
+  "offline_sha256": "5d58cdde3483029a70c8b52b9434c4fe4bb4fbc093e47c5c38aba4be9361fb52",
+  "bytes": 43905148,
+  "declared_overwrite_bytes": 19,
+  "actual_differing_bytes": 17,
+  "only_declared_edits": true,
+  "same_file_length": true,
+  "scope": "Byte identity outside three entries, not proof of behavioral equivalence or correctness."
+}

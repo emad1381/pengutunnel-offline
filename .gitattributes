@@ -4,3 +4,4 @@
 *.md text eol=lf
 *.json text eol=lf
 *.elf binary
+*.c text eol=lf

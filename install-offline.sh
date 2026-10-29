@@ -20,9 +20,9 @@ warn(){ echo "${Y}[!]${N} $*"; }
 err(){ echo "${R}[x]${N} $*" >&2; }
 hr(){ echo "${D}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${N}"; }
 pause(){ read -rp "$(echo "${D}press enter...${N}")" _; }
-ask(){ local p="$1" d="${2:-}" a; if [[ -n "$d" ]]; then read -rp "${B}${p}${N} [${d}]: " a; echo "${a:-$d}"; else read -rp "${B}${p}${N}: " a; echo "$a"; fi; }
+ask(){ local p="$1" d="${2:-}" a; if [[ -n "$d" ]]; then read -rp "${B}${p}${N} [${d}]: " a || return 1; echo "${a:-$d}"; else read -rp "${B}${p}${N}: " a || return 1; echo "$a"; fi; }
 
-ask_req(){ local p="$1" a; while :; do read -rp "${B}${p}${N}: " a; if [[ -n "${a// }" ]]; then echo "$a"; return; fi; echo "${R}[x]${N} this field is required — please enter a value" >&2; done; }
+ask_req(){ local p="$1" a; while :; do read -rp "${B}${p}${N}: " a || return 1; if [[ -n "${a// }" ]]; then echo "$a"; return; fi; echo "${R}[x]${N} this field is required — please enter a value" >&2; done; }
 strip_block(){ local f="$1" tmp; tmp="$(mktemp)"; awk -v sec="[$2]" 'BEGIN{skip=0} $0==sec{skip=1;next} skip==1&&/^\[/{skip=0} skip==0{print}' "$f" > "$tmp" && mv "$tmp" "$f"; }
 _ipl_block(){ awk '/^\[xui_iplimit\]/{f=1;next} f&&/^\[/{f=0} f{print}' "$1" 2>/dev/null; }
 _ipl_enabled(){ _ipl_block "$1" | grep -q 'enabled *= *true'; }
@@ -31,7 +31,7 @@ _ipl_field(){ _ipl_block "$1" | sed -n "s/^ *$2 *= *\"\{0,1\}\([^\"]*\)\"\{0,1\}
 ask_yn(){
   local p="$1" d="${2:-}" a
   while true; do
-    a="$(ask "$p" "$d")"
+    a="$(ask "$p" "$d")" || return 1
     case "${a,,}" in
       y|yes) echo "y"; return 0;;
       n|no)  echo "n"; return 0;;
@@ -40,18 +40,19 @@ ask_yn(){
   done
 }
 
-WIZ_VAL=""; WIZ_BACK=0
+WIZ_VAL=""; WIZ_BACK=0; INPUT_EOF=0
+wread(){ builtin read "$@" || { INPUT_EOF=1; WIZ_BACK=1; return 1; }; }
 wask(){   # $1 prompt  $2 default
   local p="$1" d="${2:-}" a
-  if [[ -n "$d" ]]; then read -rp "${B}${p}${N} ${D}(b=back)${N} [${d}]: " a; a="${a:-$d}"
-  else read -rp "${B}${p}${N} ${D}(b=back)${N}: " a; fi
+  if [[ -n "$d" ]]; then wread -rp "${B}${p}${N} ${D}(b=back)${N} [${d}]: " a || return 1; a="${a:-$d}"
+  else wread -rp "${B}${p}${N} ${D}(b=back)${N}: " a || return 1; fi
   case "$a" in b|B|back|BACK) WIZ_BACK=1; WIZ_VAL=""; return 0;; esac
   WIZ_BACK=0; WIZ_VAL="$a"
 }
 wask_req(){   # $1 prompt (required; blank re-asks)
   local p="$1" a
   while :; do
-    read -rp "${B}${p}${N} ${D}(b=back)${N}: " a
+    wread -rp "${B}${p}${N} ${D}(b=back)${N}: " a || return 1
     case "$a" in b|B|back|BACK) WIZ_BACK=1; WIZ_VAL=""; return 0;; esac
     if [[ -n "${a// }" ]]; then WIZ_BACK=0; WIZ_VAL="$a"; return 0; fi
     echo "${R}[x]${N} this field is required — please enter a value (or b = back)" >&2
@@ -60,8 +61,8 @@ wask_req(){   # $1 prompt (required; blank re-asks)
 wyn(){   # $1 prompt  $2 default  -> WIZ_VAL = y|n
   local p="$1" d="${2:-}" a
   while :; do
-    if [[ -n "$d" ]]; then read -rp "${B}${p}${N} ${D}(b=back)${N} [${d}]: " a; a="${a:-$d}"
-    else read -rp "${B}${p}${N} ${D}(b=back)${N}: " a; fi
+    if [[ -n "$d" ]]; then wread -rp "${B}${p}${N} ${D}(b=back)${N} [${d}]: " a || return 1; a="${a:-$d}"
+    else wread -rp "${B}${p}${N} ${D}(b=back)${N}: " a || return 1; fi
     case "$a" in y|Y|yes) WIZ_BACK=0; WIZ_VAL="y"; return 0;; n|N|no) WIZ_BACK=0; WIZ_VAL="n"; return 0;; b|B|back|BACK) WIZ_BACK=1; WIZ_VAL=""; return 0;; *) err "please enter y / n / b";; esac
   done
 }
@@ -177,6 +178,7 @@ install_core(){
 }
 
 ensure_core(){
+  install_prereqs || { err "cannot install required system utilities"; exit 1; }
   local got=""; [[ -f "$BIN_PATH" ]] && got="$(sha256sum "$BIN_PATH" | awk '{print $1}')"
   [[ "$got" == "$OFFLINE_SHA" ]] && return 0
   install_core || { err "cannot install the supplied offline core"; exit 1; }
@@ -190,6 +192,7 @@ wiz_run(){
   while (( _i < _n )); do
     WIZ_BACK=0
     "${_st[$_i]}"; _rc=$?
+    (( INPUT_EOF )) && return 1
     if (( _rc == 3 )); then _i=$((_i+1)); continue; fi
     if (( _rc == 4 )); then return 0; fi
     if (( WIZ_BACK == 1 )); then
@@ -215,7 +218,7 @@ cn_side(){
   echo "   ${W}1${N}) Iran   (origin — users connect here)"
   echo "   ${W}2${N}) Kharej (exit/foreign — runs xray etc.)"
   echo "  ${D}(tip: type ${W}b${N}${D} at any question to go back one step)${N}"
-  while :; do wask 'select' "${_r_side:-1}"; (( WIZ_BACK )) || break; warn "this is the first step"; done
+  while :; do wask 'select' "${_r_side:-1}"; (( INPUT_EOF )) && return 1; (( WIZ_BACK )) || break; warn "this is the first step"; done
   _r_side="$WIZ_VAL"; side="$WIZ_VAL"
 }
 cn_cat(){
@@ -571,6 +574,7 @@ configure_l4(){
   case "$transport" in tls) _r_kind=2;; ws) _r_kind=3;; wss) _r_kind=4;; xhttp) _r_kind=5;; xhttps) _r_kind=6;; *) _r_kind=1;; esac
   local step=kind
   while :; do
+    (( INPUT_EOF )) && return 1
     case "$step" in
     kind)
       echo; echo "No-tun type (set the SAME on both servers):"
@@ -767,15 +771,15 @@ configure_l4(){
       step=algo ;;
     algo)
       # tls / wss / xhttps: the TLS already protects the wire, so the default is none (the PSK
-      # still authenticates the carriers and the license). tcpfwd / ws / xhttp: aes-256-gcm.
+      # still authenticates the carriers). tcpfwd / ws / xhttp: aes-256-gcm.
       local algo_def="aes-256-gcm"
       if [[ "$transport" == "tls" || "$transport" == "wss" || "$transport" == "xhttps" ]]; then
         algo_def="none"
         echo "  ${D}none = no second encryption on the data (the TLS already covers it). The PSK${N}"
-        echo "  ${D}still authenticates the carriers and the license. Set the SAME on both servers.${N}"
+        echo "  ${D}still authenticates the carriers. Set the SAME on both servers.${N}"
       else
         echo "  ${D}none = the user data crosses the wire unencrypted (the PSK still authenticates${N}"
-        echo "  ${D}the carriers and the license). Set the SAME on both servers.${N}"
+        echo "  ${D}the carriers). Set the SAME on both servers.${N}"
       fi
       wask 'encryption (aes-256-gcm | chacha20-poly1305 | none)' "${algo:-$algo_def}"
       if (( WIZ_BACK )); then
@@ -878,7 +882,7 @@ ${fspecs}]
     echo "[security]"
     if [[ "$algo" == "none" ]]; then
       echo "# encryption none: the user data is not sealed again; the PSK below still"
-      echo "# authenticates the carriers and the license."
+      echo "# authenticates the carriers."
       echo "enable_encryption = false"
     else
       echo "enable_encryption = true"
@@ -962,7 +966,8 @@ manage_menu(){
     echo "  ${W}4${N}) View service status"
     echo "  ${W}0${N}) Back"
     hr
-    case "$(ask 'choose' '')" in
+    local menu_choice; menu_choice="$(ask 'choose' '')" || return 1
+    case "$menu_choice" in
       1) systemctl disable --now "$svc" 2>/dev/null; rm_icmp_rule "$id"; find "${SERVICE_DIR}" -maxdepth 1 -name "${svc}.service" -delete; find "$INSTALL_DIR" -maxdepth 1 \( -name "${id}.toml" -o -name "${id}.yaml" -o -name "${id}.log" \) -delete; systemctl daemon-reload; ok "removed ${id}"; pause; return ;;
       2) systemctl restart "$svc"; ok "restarted"; pause ;;
       3) view_logs "$id" "$svc" ;;
@@ -1027,7 +1032,7 @@ status_all(){
         [[ -n "$why" ]] && printf '      %-12s %s\n' "reason" "$why"
         case "$why" in
           *"times in a row"*|*"the proof is for"*)
-            printf '      %-12s %s\n' "fix" "correct the license, then menu 2 → Restart this tunnel" ;;
+            printf '      %-12s %s\n' "fix" "inspect the logs/configuration, then menu 2 → Restart this tunnel" ;;
           *)
             if au_enabled; then printf '      %-12s %s\n' "" "${D}auto core update is ON: it is started again within a minute${N}"
             elif [[ "$why" == *"older than the required minimum"* ]]; then printf '      %-12s %s\n' "fix" "update the core on the other server, then menu 2 → Restart this tunnel"
@@ -1059,39 +1064,31 @@ au_enabled(){ systemctl is-enabled "${AU_UNIT}.timer" >/dev/null 2>&1; }
 au_write_script(){ return 0; }
 
 kp_install(){
-  mkdir -p "$INSTALL_DIR"
-  cat > "$KP_SCRIPT" <<'KPS'
-LOG=/root/pengutunnel/keeper.log
+  mkdir -p "$INSTALL_DIR" "$SERVICE_DIR" || return 1
+  {
+  printf '#!/usr/bin/env bash\nLOG=%q\nLOCK=%q\n' "$KP_LOG" "${INSTALL_DIR}/keeper.lock"
+  cat <<'KPS'
 log(){ echo "$(date '+%F %T') $*" >> "$LOG"; tail -n 200 "$LOG" > "$LOG.tmp" 2>/dev/null && mv -f "$LOG.tmp" "$LOG"; }
-exec 9>/run/pengu-tunnel-keeper.lock; flock -n 9 || exit 0
-flock -n /run/pengu-core-autoupdate.lock true 2>/dev/null || exit 0
-license_stop(){
-  local lf last
-  lf="$(systemctl cat "$1" 2>/dev/null | sed -n 's/^StandardOutput=[a-z]*://p' | tail -1)"
-  if [ -f "$lf" ]; then last="$(tail -n 500 "$lf" | awk '/──────/{s=""} /⛔/{s=$0} END{print s}')"
-  else last="$(journalctl -u "$1" -n 500 --no-pager -o cat 2>/dev/null | awk '/──────/{s=""} /⛔/{s=$0} END{print s}')"; fi
-  case "$last" in *"times in a row"*|*"the proof is for"*) return 0;; esac
-  return 1
-}
+exec 9>"$LOCK"; flock -n 9 || exit 0
 for u in $(systemctl list-unit-files --type=service --no-legend 'pengutunnel-*.service' 2>/dev/null | awk '$2=="enabled"{print $1}'); do
   case "$(systemctl show -p ActiveState --value "$u" 2>/dev/null)" in active|activating|reloading|deactivating) continue;; esac
-  license_stop "$u" && continue
   systemctl reset-failed "$u" 2>/dev/null
   n="${u%.service}"; n="${n#pengutunnel-}"
   if systemctl start "$u" 2>/dev/null; then log "${n} was not running — started it again"
   else log "${n} is not running and could not be started"; fi
 done
 KPS
-  chmod 755 "$KP_SCRIPT"
-  if [[ ! -f "${SERVICE_DIR}/${KP_UNIT}.service" || ! -f "${SERVICE_DIR}/${KP_UNIT}.timer" ]]; then
-    cat > "${SERVICE_DIR}/${KP_UNIT}.service" <<EOF
+  } > "$KP_SCRIPT" || return 1
+  chmod 755 "$KP_SCRIPT" || return 1
+  cat > "${SERVICE_DIR}/${KP_UNIT}.service" <<EOF
 [Unit]
 Description=pengutunnel tunnel keeper (starts a stopped tunnel again)
 [Service]
 Type=oneshot
 ExecStart=/bin/bash ${KP_SCRIPT}
 EOF
-    cat > "${SERVICE_DIR}/${KP_UNIT}.timer" <<EOF
+  [[ $? -eq 0 ]] || return 1
+  cat > "${SERVICE_DIR}/${KP_UNIT}.timer" <<EOF
 [Unit]
 Description=pengutunnel tunnel keeper (every minute)
 [Timer]
@@ -1101,19 +1098,40 @@ AccuracySec=5s
 [Install]
 WantedBy=timers.target
 EOF
-    systemctl daemon-reload
-  fi
-  systemctl is-enabled "${KP_UNIT}.timer" >/dev/null 2>&1 || systemctl enable --now "${KP_UNIT}.timer" >/dev/null 2>&1
+  [[ $? -eq 0 ]] || return 1
+  systemctl daemon-reload || return 1
+  systemctl enable --now "${KP_UNIT}.timer" >/dev/null 2>&1
 }
+kp_enabled(){ systemctl is-enabled "${KP_UNIT}.timer" >/dev/null 2>&1; }
+kp_disable(){ systemctl disable --now "${KP_UNIT}.timer" "${KP_UNIT}.service" >/dev/null 2>&1; }
 au_enable(){ warn "remote auto-update is disabled for the offline core"; return 1; }
 au_disable(){
-  systemctl disable --now "${AU_UNIT}.timer" "${KP_UNIT}.timer" >/dev/null 2>&1
+  kp_disable
+  systemctl disable --now "${AU_UNIT}.timer" "${AU_UNIT}.service" >/dev/null 2>&1
   rm -f "${SERVICE_DIR}/${AU_UNIT}.timer" "${SERVICE_DIR}/${AU_UNIT}.service" "$AU_SCRIPT" "${INSTALL_DIR}/autoupdate.failed" \
         "${SERVICE_DIR}/${KP_UNIT}.timer" "${SERVICE_DIR}/${KP_UNIT}.service" "$KP_SCRIPT"
   systemctl daemon-reload
 }
 offline_disable_remote_updates(){ systemctl disable --now "${AU_UNIT}.timer" "${AU_UNIT}.service" >/dev/null 2>&1 || true; }
-auto_update_menu(){ banner; echo "Offline core: remote auto-updates are disabled. Use the reviewed local package."; pause; }
+auto_update_menu(){
+  local pick
+  while true; do
+    banner
+    echo "Offline core: remote auto-updates are disabled. Use the reviewed local package."
+    if kp_enabled; then echo "Local tunnel keeper: ON"; else echo "Local tunnel keeper: OFF"; fi
+    echo "  1) Enable local keeper (starts stopped enabled tunnels every minute)"
+    echo "  2) Disable local keeper"
+    echo "  3) Show keeper status"
+    echo "  0) Back"
+    pick="$(ask 'choose' '')" || return 1
+    case "$pick" in
+      1) kp_install && ok "local keeper enabled; remote updates remain OFF" || err "could not enable keeper"; pause ;;
+      2) kp_disable && ok "local keeper disabled" || err "could not disable keeper"; pause ;;
+      3) systemctl status "${KP_UNIT}.timer" "${KP_UNIT}.service" --no-pager -l; pause ;;
+      0) return ;;
+    esac
+  done
+}
 
 remove_core(){ banner; if [[ "$(ask_yn 'remove ALL tunnels + core? (y/n)' 'n')" == "y" ]]; then au_disable; for id in $(list_ids); do systemctl disable --now "$(svc_of "$id")" 2>/dev/null; rm_icmp_rule "$id"; find "${SERVICE_DIR}" -maxdepth 1 -name "pengutunnel-${id}.service" -delete; done; systemctl daemon-reload; find "$INSTALL_DIR" -mindepth 1 -delete 2>/dev/null; ok "removed /root/pengutunnel"; fi; pause; }
 
@@ -1207,7 +1225,8 @@ xui_iplimit_menu(){
     echo "  ${R}2) Disable${N}"
     echo "  ${B}3) Status & log${N}"
     echo "  ${G}0) Back${N}"
-    case "$(ask 'choose' '')" in
+    local menu_choice; menu_choice="$(ask 'choose' '')" || return 1
+    case "$menu_choice" in
       1) _ipl_enable "$id" "$conf" ;;
       2) _ipl_disable "$id" "$conf" ;;
       3) _ipl_status "$id" "$conf" ;;
@@ -1279,7 +1298,8 @@ best_mirror(){
     echo "  ${W}2) Manual pick from list${N}"
     echo "  ${Y}3) Restore Ubuntu default${N}"
     echo "  ${G}0) Back${N}"
-    case "$(ask 'choose' '')" in
+    local menu_choice; menu_choice="$(ask 'choose' '')" || return 1
+    case "$menu_choice" in
       1) _mirror_auto; pause ;;
       2) _mirror_manual; pause ;;
       3) _mirror_restore; pause ;;
@@ -1326,7 +1346,8 @@ best_dns(){
     echo "  ${W}2) Manual pick from list${N}"
     echo "  ${Y}3) Restore default${N}"
     echo "  ${G}0) Back${N}"
-    case "$(ask 'choose' '')" in
+    local menu_choice; menu_choice="$(ask 'choose' '')" || return 1
+    case "$menu_choice" in
       1) _dns_auto; pause ;;
       2) _dns_manual; pause ;;
       3) _dns_restore; pause ;;
@@ -1371,12 +1392,13 @@ ip_probe_both(){
 
 menu(){
   while true; do
+    (( INPUT_EOF )) && return 1
     banner
     echo "  ${G}1. Configure a new tunnel${N}"
     echo "  ${R}2. Tunnel management${N}"
     echo "  ${B}3. Check tunnel status${N}"
     echo "  ${B}4. x-ui IP-limit ban sync${N}"
-    echo "  ${B}5. Auto core update${N} $(au_enabled && echo "${G}[ON]${N}" || echo "${R}[OFF]${N}")"
+    echo "  ${B}5. Auto-update / keeper${N} (remote updates OFF; keeper $(kp_enabled && echo ON || echo OFF))"
     echo "  ${G}6. Update core${N}"
     echo "  ${G}7. Update script${N}"
     echo "  ${G}8. Remove core${N}"
@@ -1385,7 +1407,8 @@ menu(){
     echo "  ${B}11. IP probe${N}"
     echo "  ${G}0. Exit${N}"
     echo "${G}═══════════════════════════════════════════${N}"
-    case "$(ask 'Enter your choice [0-11]' '')" in
+    local menu_choice; menu_choice="$(ask 'Enter your choice [0-11]' '')" || return 1
+    case "$menu_choice" in
       1) configure_new ;;
       2) manage_menu ;;
       3) status_all ;;
@@ -1403,9 +1426,9 @@ menu(){
 }
 
 need_root
+[[ -t 0 ]] || { err "an interactive terminal is required"; exit 1; }
 offline_disable_remote_updates
 printf "${D}loading…${N}\r"
-load_sysinfo
 ensure_core
-au_enabled && { au_write_script; kp_install; }   # an older installer's auto-update script is replaced by this one
+load_sysinfo
 menu
